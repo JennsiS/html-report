@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Interactivo con Excel</title>
+    <!-- Incluir DataTables para la tabla interactiva -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <!-- Incluir Plotly para gráficos interactivos -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- Incluir SheetJS para leer archivos Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <h1>Reporte Interactivo</h1>
+
+    <!-- Formulario para subir archivo Excel -->
+    <input type="file" id="input-excel" multiple />
+
+    <label for="area-salud">Área de salud:</label>
+    <select id="area-salud">
+        <option value="">Todas</option>
+        <!-- Options will be populated dynamically -->
+    </select>
+
+    <label for="municipio">Municipio:</label>
+    <select id="municipio">
+        <option value="">Todos</option>
+        <!-- Options will be populated dynamically -->
+    </select>
+
+    <label for="servicio-salud">Servicio de salud:</label>
+    <select id="servicio-salud">
+        <option value="">Todos</option>
+        <!-- Options will be populated dynamically -->
+    </select>
+
+    
+    <!-- Tabla donde se mostrarán los datos -->
+    <table id="data-table" class="display" style="width:100%"></table>
+
+    <!-- Contenedor para el gráfico -->
+    <div id="chart"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
