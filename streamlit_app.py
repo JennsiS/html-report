@@ -9,7 +9,7 @@ def read_excel_files(file_paths):
     dfs = []
     for file in file_paths:
         df = pd.read_excel(file)
-        df = df.drop(columns=['Idcie10'])
+        df = df.drop(columns=['Idcie10'], errors='ignore')  # Ignore if column does not exist
         df = df.rename(columns={'Descripción Cie10': 'Tipo de Dengue', 'Métrica': 'Número de casos'})
         dfs.append(df)
     return pd.concat(dfs, ignore_index=True)
@@ -33,10 +33,7 @@ def filter_data(data, selected_areas, selected_municipios, selected_servicios, s
     if selected_servicios:
         filtered_data = filtered_data[filtered_data['Servicio de Salud'].isin(selected_servicios)]
     
-    if 'Dengue total' in selected_descripciones:
-        filtered_data = filtered_data.groupby(['Semana', 'Año']).agg({
-            'Número de casos': 'sum'
-        }).reset_index()
+    if selected_descripciones and 'Dengue total' in selected_descripciones:
         filtered_data['Tipo de Dengue'] = 'Dengue total'
     elif selected_descripciones:
         filtered_data = filtered_data[filtered_data['Tipo de Dengue'].isin(selected_descripciones)]
@@ -45,9 +42,18 @@ def filter_data(data, selected_areas, selected_municipios, selected_servicios, s
 
 # Function to render chart
 def render_chart(data):
+    # Group data by week and year and sum cases
+    grouped_data = data.groupby(['Semana', 'Año', 'Tipo de Dengue']).agg({
+        'Número de casos': 'sum'
+    }).reset_index()
+
+    grouped_data['Semana'] = grouped_data['Semana'].astype(str).str.zfill(2)
+
+    grouped_data = grouped_data.sort_values(['Año', 'Semana'])
+
     fig = go.Figure()
-    for desc in data['Tipo de Dengue'].unique():
-        df_desc = data[data['Tipo de Dengue'] == desc]
+    for desc in grouped_data['Tipo de Dengue'].unique():
+        df_desc = grouped_data[grouped_data['Tipo de Dengue'] == desc]
         fig.add_trace(go.Scatter(
             x=df_desc['Semana'].astype(str) + '-' + df_desc['Año'].astype(str),
             y=df_desc['Número de casos'],
@@ -60,13 +66,13 @@ def render_chart(data):
         xaxis_title='Semana epidemiológica - Año',
         yaxis_title='Número de casos',
         legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=-0.3,
-            xanchor="center",
-            x=0.5
+            orientation="v",  
+            yanchor="top",
+            y=1,  
+            xanchor="left",
+            x=1.05
         ),
-        margin=dict(b=150)
+        margin=dict(l=0, r=200)
     )
     return fig
 
@@ -74,7 +80,7 @@ def render_chart(data):
 st.title('Reporte de casos de Dengue')
 
 # Define file paths
-file_paths = ['SIGSA_18_Epivigila_año_2023.xlsx', 'SIGSA_18_Epivigila_año_2024.xlsx']
+file_paths = ['data/SIGSA_18_Epivigila_año_2023.xlsx', 'data/SIGSA_18_Epivigila_año_2024.xlsx']
 
 # Read data from specified files
 data = read_excel_files(file_paths)

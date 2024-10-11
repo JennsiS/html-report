@@ -53,7 +53,7 @@ function populateSelectors(data) {
     const descripciones = new Set();
 
     data.forEach(item => {
-        areas.add(item['Área de salud']);
+        areas.add(item['Área de Salud']);
         municipios.add(item['Municipio']);
         servicios.add(item['Servicio de salud']);
         descripciones.add(item['Descripción Cie10']);
@@ -111,46 +111,6 @@ function updateMunicipioAndServicio() {
     filterData();
 }
 
-// function filterData() {
-//     const selectedAreas = Array.from(document.getElementById('area-salud').selectedOptions).map(option => option.value);
-//     const selectedMunicipios = Array.from(document.getElementById('municipio').selectedOptions).map(option => option.value);
-//     const selectedServicios = Array.from(document.getElementById('servicio-salud').selectedOptions).map(option => option.value);
-//     const selectedDescripciones = Array.from(document.getElementById('descripcion').selectedOptions).map(option => option.value);
-
-//     let filteredData = mergedData.filter(item => {
-//         const areaMatch = selectedAreas.length === 0 || selectedAreas.includes(item['Área de Salud']);
-//         const municipioMatch = selectedMunicipios.length === 0 || selectedMunicipios.includes(item['Municipio']);
-//         const servicioMatch = selectedServicios.length === 0 || selectedServicios.includes(item['Servicio de Salud']);
-//         return areaMatch && municipioMatch && servicioMatch;
-//     });
-
-//     // Handle the Descripción Cie10 filtering
-//     if (selectedDescripciones.includes("all")) {
-//         // If "All Types (Sum Metrica)" is selected, sum the Metrica for each unique Semana
-//         const summedData = {};
-//         filteredData.forEach(item => {
-//             const semana = item.Semana;
-//             if (!summedData[semana]) {
-//                 summedData[semana] = { 'Semana': semana, 'Metrica': 0 };
-//             }
-//             summedData[semana].Metrica += item.Metrica; // Sum the Metrica
-//         });
-//         filteredData = Object.values(summedData); // Convert back to an array
-//     } else {
-//         // Filter by selected Descripción Cie10
-//         filteredData = filteredData.filter(item => {
-//             return selectedDescripciones.length === 0 || selectedDescripciones.includes(item['Descripción Cie10']);
-//         });
-//     }
-
-//     // Sort the filtered data by 'Semana' as a number
-//     filteredData.sort((a, b) => {
-//         return a.Semana - b.Semana; // Numerical comparison
-//     });
-
-//     renderTable(filteredData); // Render the table with filtered and sorted data
-//     renderChart(filteredData); // Render the chart with filtered and sorted data
-// }
 function filterData() {
     const selectedAreas = Array.from(document.getElementById('area-salud').selectedOptions).map(option => option.value);
     const selectedMunicipios = Array.from(document.getElementById('municipio').selectedOptions).map(option => option.value);
