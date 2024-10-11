@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporte Interactivo con Excel</title>
+    <title>Reporte casos de Dengue</title>
     <!-- Incluir DataTables para la tabla interactiva -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -14,25 +14,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
-    <h1>Reporte Interactivo</h1>
+    <h1>Reporte casos Dengue</h1>
 
     <!-- Formulario para subir archivo Excel -->
-    <input type="file" id="input-excel" multiple />
+    <input type="file" id="input-excel"  multiple/>
 
     <label for="area-salud">Área de salud:</label>
-    <select id="area-salud">
+    <select id="area-salud" >
         <option value="">Todas</option>
         <!-- Options will be populated dynamically -->
     </select>
 
     <label for="municipio">Municipio:</label>
-    <select id="municipio">
+    <select id="municipio" >
         <option value="">Todos</option>
         <!-- Options will be populated dynamically -->
     </select>
 
     <label for="servicio-salud">Servicio de salud:</label>
-    <select id="servicio-salud">
+    <select id="servicio-salud" >
         <option value="">Todos</option>
         <!-- Options will be populated dynamically -->
     </select>
