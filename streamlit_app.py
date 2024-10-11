@@ -40,13 +40,28 @@ def filter_data(data, selected_areas, selected_municipios, selected_servicios, s
     
     return filtered_data.sort_values(['Año', 'Semana'])
 
+# Function to fill missing weeks with 0
+def fill_missing_weeks(data):
+    # Get unique years and types of dengue
+    years = sorted(data['Año'].unique())
+    dengue_types = data['Tipo de Dengue'].unique()
+    
+    # Create a DataFrame with all combinations of weeks (1 to 52), years, and dengue types
+    all_weeks = pd.MultiIndex.from_product([range(1, 53), years, dengue_types], names=['Semana', 'Año', 'Tipo de Dengue']).to_frame(index=False)
+    
+    # Merge with the original data and fill missing values with 0
+    merged_data = pd.merge(all_weeks, data, on=['Semana', 'Año', 'Tipo de Dengue'], how='left').fillna({'Número de casos': 0})
+    
+    return merged_data
+
 # Function to render chart
 def render_chart(data):
     # Group data by week and year and sum cases
-    grouped_data = data.groupby(['Semana', 'Año', 'Tipo de Dengue']).agg({
+    grouped_data = fill_missing_weeks(data).groupby(['Semana', 'Año', 'Tipo de Dengue']).agg({
         'Número de casos': 'sum'
     }).reset_index()
 
+    # Format the week with leading zeros
     grouped_data['Semana'] = grouped_data['Semana'].astype(str).str.zfill(2)
 
     grouped_data = grouped_data.sort_values(['Año', 'Semana'])
